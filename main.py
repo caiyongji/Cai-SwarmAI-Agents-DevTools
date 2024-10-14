@@ -1,16 +1,31 @@
-# This is a sample Python script.
+from swarm import Swarm, Agent
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+from dotenv import load_dotenv
+import os
+
+# Load the .env file
+load_dotenv(".env.local")
+
+client = Swarm()
+
+def transfer_to_agent_b():
+    return agent_b
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+agent_a = Agent(
+    name="Agent A",
+    instructions="You are a helpful agent.",
+    functions=[transfer_to_agent_b],
+)
 
+agent_b = Agent(
+    name="Agent B",
+    instructions="Only speak in Haikus.",
+)
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+response = client.run(
+    agent=agent_a,
+    messages=[{"role": "user", "content": "I want to talk to agent B."}],
+)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+print(response.messages[-1]["content"])
